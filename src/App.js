@@ -7,7 +7,7 @@ import './App.css'
 // OUR TOP 100 BOOKS IS A JSON ARRAY THAT CAN BE IMPORTED AND IS PARSED AUTOMATICALLY!
 import bookList from './books.json'
 // try uncommenting the following line and looking at the list in your browser console:
-// console.log(bookList)
+console.log(bookList)
 
 class App extends Component {
 
@@ -15,7 +15,10 @@ class App extends Component {
     books: bookList
   }
 
+
+
   render() {
+    const { books } = this.state
     return (
       <div className="App">
         {/* Redirect to "/books" from the "/" root URL */}
@@ -31,12 +34,34 @@ class App extends Component {
             
             {/* Left Column */}
             <div className="column is-4">
-              <BookList />
+
+              <Route path="/books" render={()=> {
+                
+              return <BookList books={books}/> 
+              }} />
+
             </div>
 
             {/* Right Column */}
             <div className="column is-8">
-              <BookDetail />
+              <Route path="/books/:id" render={(routeProps)=> {
+                 
+                 const bookId = routeProps.match.params.id 
+                 //console.log(bookId) 
+                 const book = books.find((b) => {
+                    return b._id === bookId
+                 })
+                  
+              // bookList.find((b)=>{
+              //  return b.author === "Jane AUstin"
+             // })
+            //  return <h1>{book.title}</h1>
+
+              return  <BookDetail book={book}/>
+           
+              }} />
+
+             
             </div>
 
           </div>
